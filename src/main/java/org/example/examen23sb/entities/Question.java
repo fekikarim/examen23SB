@@ -1,5 +1,6 @@
 package org.example.examen23sb.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -23,8 +24,11 @@ public class Question {
     private Complexite complexite;
     
     @ManyToOne
+    @JsonBackReference
+    @ToString.Exclude
     private Quiz quiz;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<Reponse> listR;
 }

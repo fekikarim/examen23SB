@@ -1,5 +1,6 @@
 package org.example.examen23sb.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -27,5 +28,7 @@ public class Candidat {
     private Niveau niveau;
     
     @ManyToMany(mappedBy = "listC")
+    @JsonIgnore
+    @ToString.Exclude
     private List<Quiz> listQ;
 }

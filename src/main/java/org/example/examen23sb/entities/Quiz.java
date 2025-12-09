@@ -1,5 +1,7 @@
 package org.example.examen23sb.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -24,9 +26,13 @@ public class Quiz {
     
     private LocalDate dateQuiz;
     
-    @OneToMany(mappedBy = "quiz")
+    @OneToMany(mappedBy = "quiz", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @ToString.Exclude
     private List<Question> listQt;
     
     @ManyToMany
+    @JsonIgnore
+    @ToString.Exclude
     private List<Candidat> listC;
 }
