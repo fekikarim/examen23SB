@@ -34,6 +34,24 @@ public class QuizController {
         return ResponseEntity.created(URI.create("/quiz/" + saved.getIdQuiz())).body(saved);
     }
 
+    @PostMapping("/ajouter")
+    public ResponseEntity<Quiz> ajouterQuiz(@RequestBody Quiz quiz) {
+        Quiz saved = quizService.ajouterQuiz(quiz);
+        return ResponseEntity.created(URI.create("/quiz/" + saved.getIdQuiz())).body(saved);
+    }
+
+    @PutMapping("/affecter")
+    public ResponseEntity<Quiz> affecterQuizCandidat(@RequestParam String titreQuiz, @RequestParam Integer idCandidat) {
+        Quiz quiz = quizService.affecterQuizCandidat(titreQuiz, idCandidat);
+        return ResponseEntity.ok(quiz);
+    }
+
+    @GetMapping("/plus-difficile/recuperer")
+    public ResponseEntity<String> recupererQuizPlusDifficile() {
+        quizService.recupererQuizPlusDifficile();
+        return ResponseEntity.ok("Recherche du quiz le plus difficile en cours...");
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Quiz> update(@PathVariable Integer id, @RequestBody Quiz quiz) {
         return quizService.findById(id)

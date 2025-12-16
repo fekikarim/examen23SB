@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface QuestionService {
     Question save(Question question);
 
+    Question ajouterQuestEtRepEtAffecterQuestAQuiz(Question question, Integer idQuiz);
+
     List<Question> findAll();
 
     Optional<Question> findById(Integer id);

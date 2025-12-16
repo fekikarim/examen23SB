@@ -3,6 +3,7 @@ package org.example.examen23sb.services.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.examen23sb.entities.Candidat;
+import org.example.examen23sb.entities.Niveau;
 import org.example.examen23sb.repositories.CandidatRepository;
 import org.example.examen23sb.services.CandidatService;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,18 @@ public class CandidatServiceImpl implements CandidatService {
     @Override
     public Candidat save(Candidat candidat) {
         return candidatRepository.save(candidat);
+    }
+
+    @Override
+    public Candidat ajouterCandidat(Candidat candidat) {
+        log.info("Ajout du candidat: {} {}", candidat.getNom(), candidat.getPrenom());
+        return candidatRepository.save(candidat);
+    }
+
+    @Override
+    public List<Candidat> recupererCandidat(String specialite, Niveau niveau) {
+        log.info("Recherche des candidats avec niveau={} et specialite={}", niveau, specialite);
+        return candidatRepository.recupererCandidat(specialite, niveau);
     }
 
     @Override

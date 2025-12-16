@@ -34,6 +34,12 @@ public class QuestionController {
         return ResponseEntity.created(URI.create("/questions/" + saved.getIdQuestion())).body(saved);
     }
 
+    @PostMapping("/ajouter-avec-reponses")
+    public ResponseEntity<Question> ajouterQuestEtRepEtAffecterQuestAQuiz(@RequestBody Question question, @RequestParam Integer idQuiz) {
+        Question saved = questionService.ajouterQuestEtRepEtAffecterQuestAQuiz(question, idQuiz);
+        return ResponseEntity.created(URI.create("/questions/" + saved.getIdQuestion())).body(saved);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Question> update(@PathVariable Integer id, @RequestBody Question question) {
         return questionService.findById(id)

@@ -8,6 +8,12 @@ import java.util.Optional;
 public interface QuizService {
     Quiz save(Quiz quiz);
 
+    Quiz ajouterQuiz(Quiz quiz);
+
+    Quiz affecterQuizCandidat(String titreQuiz, Integer idCandidat);
+
+    void recupererQuizPlusDifficile();
+
     List<Quiz> findAll();
 
     Optional<Quiz> findById(Integer id);
