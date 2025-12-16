@@ -28,7 +28,7 @@ public class Question {
     @ToString.Exclude
     private Quiz quiz;
     
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Reponse> listR;
 }

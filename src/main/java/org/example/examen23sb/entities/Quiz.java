@@ -32,6 +32,11 @@ public class Quiz {
     private List<Question> listQt;
     
     @ManyToMany
+    @JoinTable(
+        name = "quiz_listc",
+        joinColumns = @JoinColumn(name = "quiz_id_quiz"),
+        inverseJoinColumns = @JoinColumn(name = "listc_id_candidat")
+    )
     @JsonIgnore
     @ToString.Exclude
     private List<Candidat> listC;

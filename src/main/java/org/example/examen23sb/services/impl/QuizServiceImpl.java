@@ -11,6 +11,7 @@ import org.example.examen23sb.repositories.QuizRepository;
 import org.example.examen23sb.services.QuizService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,30 +37,39 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
+    @Transactional
     public Quiz affecterQuizCandidat(String titreQuiz, Integer idCandidat) {
+        // Fetch entities within the transaction
         Quiz quiz = quizRepository.findByTitreQuiz(titreQuiz)
                 .orElseThrow(() -> new IllegalArgumentException("Quiz not found: " + titreQuiz));
         Candidat candidat = candidatRepository.findById(idCandidat)
                 .orElseThrow(() -> new IllegalArgumentException("Candidat not found: " + idCandidat));
         
-        // Add candidat to quiz's list
+        // Initialize collection if null
         if (quiz.getListC() == null) {
             quiz.setListC(new java.util.ArrayList<>());
         }
+        
+        // Add candidat to quiz if not already present
         if (!quiz.getListC().contains(candidat)) {
+            // Increment candidat's nbQuiz first
+            Integer currentCount = candidat.getNbQuiz() != null ? candidat.getNbQuiz() : 0;
+            candidat.setNbQuiz(currentCount + 1);
+            
+            // Save candidat changes first
+            candidat = candidatRepository.save(candidat);
+            
+            // Then add to the quiz collection
             quiz.getListC().add(candidat);
+            
+            log.info("Affectation du quiz '{}' au candidat {} - nbQuiz incremented to {}", 
+                    titreQuiz, candidat.getPrenom(), candidat.getNbQuiz());
         }
         
-        // Increment candidat's nbQuiz
-        Integer currentCount = candidat.getNbQuiz() != null ? candidat.getNbQuiz() : 0;
-        candidat.setNbQuiz(currentCount + 1);
+        // Save the quiz with the new association
+        quiz = quizRepository.save(quiz);
         
-        log.info("Affectation du quiz '{}' au candidat {} - nbQuiz incremented to {}", 
-                titreQuiz, candidat.getPrenom(), candidat.getNbQuiz());
-        
-        // Save both
-        candidatRepository.save(candidat);
-        return quizRepository.save(quiz);
+        return quiz;
     }
 
     @Override

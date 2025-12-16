@@ -34,6 +34,7 @@ public class QuestionServiceImpl implements QuestionService {
         // Set the quiz for the question
         question.setQuiz(quiz);
         
+        // With cascade = CascadeType.ALL, responses will be saved automatically
         // Save the question with its responses
         Question savedQuestion = questionRepository.save(question);
         
